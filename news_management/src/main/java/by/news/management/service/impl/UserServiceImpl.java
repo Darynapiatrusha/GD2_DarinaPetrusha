@@ -1,9 +1,9 @@
 package by.news.management.service.impl;
 
-import by.news.management.dao.DAOException;
 import by.news.management.dao.DaoProvider;
-import by.news.management.dao.NoSuchUserException;
 import by.news.management.dao.UserDao;
+import by.news.management.dao.exceptions.DAOException;
+import by.news.management.dao.exceptions.UserNotFoundException;
 import by.news.management.bean.User;
 import by.news.management.service.ServiceException;
 import by.news.management.service.UserService;
@@ -12,36 +12,27 @@ public class UserServiceImpl implements UserService {
 	private final UserDao userDao = DaoProvider.getInstance().getUserDao();
 
 	@Override
-	public void Registation(User user) throws ServiceException, ClassNotFoundException {
+	public void registation(User user) throws ServiceException {
 		try {
+
 			userDao.registration(user);
+
 		} catch (DAOException e) {
-			e.printStackTrace();
+			throw new ServiceException("Error in process registration", e);
 		}
 	}
 
 	@Override
-	public boolean SignIn(String login, String password) throws ServiceException, ClassNotFoundException {
-		boolean checkedPassword = true;
-		boolean check = true;
+	public User signIn(String login, String password) throws ServiceException {
 		try {
-			checkedPassword = userDao.signIn(login, password);
-			if (checkedPassword != true) {
-				check = true;
-			} else {
-				check = false;
-			}
-		} catch (DAOException e) {
-			e.printStackTrace();
-		} catch (NoSuchUserException e) {
-			e.printStackTrace();
+			return userDao.signIn(login, password);
+		} catch (DAOException | UserNotFoundException e) {
+			throw new ServiceException("Error in process of signin", e);
 		}
-		return check;
-
 	}
 
 	@Override
-	public void SignOut(String login) throws ServiceException {
+	public void signOut(String login) throws ServiceException {
 
 	}
 

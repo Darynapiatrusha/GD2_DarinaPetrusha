@@ -2,7 +2,7 @@ package by.news.management.dao.impl;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public final class BcryptSecurity {
+public final class PasswordSecurity {
 	
 	public static String hashPassword(String password) {
 		String hashedPassword = null;

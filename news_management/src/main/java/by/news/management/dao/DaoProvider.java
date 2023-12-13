@@ -10,17 +10,17 @@ public final class DaoProvider {
 	private final NewsDao newsDaoImpl = new SQLNewsDao();
 
 	private DaoProvider() {
-	};
+	}
 
-	public static DaoProvider getInstance() {
+	public static final DaoProvider getInstance() {
 		return instance;
 	}
 
-	public UserDao getUserDao() {
+	public final UserDao getUserDao() {
 		return userDaoImpl;
 	}
 
-	public NewsDao getNewsDao() {
+	public final NewsDao getNewsDao() {
 		return newsDaoImpl;
 	}
 }

@@ -2,6 +2,8 @@ package by.news.management.controller.impl;
 
 import java.io.IOException;
 
+import by.news.management.bean.Roles;
+import by.news.management.bean.Status;
 import by.news.management.bean.User;
 import by.news.management.controller.Command;
 import by.news.management.service.ServiceException;
@@ -10,21 +12,36 @@ import by.news.management.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class RegistrationCommand implements Command {
 	private final UserService userService = ServiceProvider.getInstance().getUserService();
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, ClassNotFoundException {
-		User user = new User(request.getParameter("name"), request.getParameter("surname"),
-				request.getParameter("login"), request.getParameter("e-mail"), request.getParameter("password"),request.getParameter("status"));
-		try {
-			userService.Registation(user);
-			request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-		} catch (ServiceException e) {
-			e.printStackTrace();
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+		String name = request.getParameter("name");
+		String surname = request.getParameter("surname");
+		String login = request.getParameter("login");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		Roles role = Roles.ADMIN;
+		Status status = Status.ACTIVE;
+		
+		User user = new User(name, surname, login, email, password, role, status);
+		
+		try {
+			userService.registation(user);
+			HttpSession session = request.getSession(true);
+			session.setAttribute("userName", user.getName());
+			session.setAttribute("userId", user.getId());
+
+			String mes = "RegistrationOK";
+			response.sendRedirect("Controller?command=show_news_list&info_message=" + mes);
+
+		} catch (ServiceException e) {
+			response.sendRedirect("Controller?command=error_registration&error_message='errorWithRegistration'");
+			e.printStackTrace();
 		}
 	}
 }

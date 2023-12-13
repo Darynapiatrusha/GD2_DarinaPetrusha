@@ -20,11 +20,19 @@
 			<p>English</p>
 		</div>
 	</div>
+	<%
+		if (request.getParameter("error_message") != null) {
+		%>
+		<div class="info-message">
+			<p>Ошибка при авторизации, попробуйте еще раз!</p>
+		</div>
+		<%
+		}
+		%>
 	<div class="auth-container">
 		<div class="frame">
 			<h1>Вход</h1>
 			<form name="sign_in" action="Controller" method="post" target="_blank">
-			<div class="attention">Неверные логин или пароль, повторите попытку</div>
 				<input type="hidden" name="command" value="sign_in">
 				        
 			    <label><b>Логин</b></label><br>
@@ -33,7 +41,7 @@
 				<label><b>Пароль</b></label><br>
 				       <input type="password" name="password" required placeholder="Введите пароль"><br>
 				      <div class="forgot-password-btn">Забыли пароль?</div>
-				      <div class="registration-btn"><a href=registration.jsp>Зарегистрироваться</a></div>
+				      <div class="registration-btn"><a href="Controller?command=show_registration_page">Зарегистрироваться</a></div>
 				<input type="submit" class=btn value="Войти"> <br>
 			</form>
 		</div>

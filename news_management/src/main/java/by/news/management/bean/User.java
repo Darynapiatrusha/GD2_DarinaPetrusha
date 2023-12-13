@@ -1,35 +1,84 @@
 package by.news.management.bean;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private int id;
 	private String name;
 	private String surname;
 	private String login;
 	private String email;
 	private String password;
-	private String status;
-
+	private Roles roles = Roles.ADMIN;
+	private Status status = Status.ACTIVE;
+	
 	public User() {
 		super();
 	}
 
-	public User(String login,String password) {
+	public User(int id, String name, String surname, String login, String email, String password, Roles roles,
+			Status status) {
 		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
 		this.login = login;
+		this.email = email;
 		this.password = password;
+		this.roles = roles;
+		this.status = status;
 	}
-	
-	public User(String name, String surname, String login, String email, String password, String status) {
+
+	public User(String name, String surname, String login, String email, String password, Roles roles,
+			Status status) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.login = login;
 		this.email = email;
 		this.password = password;
+		this.roles = roles;
 		this.status = status;
+	}
+
+	public User(int id, String name, String surname, Roles roles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.roles = roles;
+	}
+
+	public User(int id, String name, String surname, String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+	}
+
+	public User(int id, String name, String surname) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+	}
+
+	public User(String login, String password) {
+		super();
+		this.login = login;
+		this.password = password;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -72,17 +121,25 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getStatus() {
+	public Roles getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Roles roles) {
+		this.roles = roles;
+	}
+
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, login, name, password, status, surname);
+		return Objects.hash(email, id, login, name, password, roles, status, surname);
 	}
 
 	@Override
@@ -94,14 +151,16 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(email, other.email) && Objects.equals(login, other.login)
+		return Objects.equals(email, other.email) && id == other.id && Objects.equals(login, other.login)
 				&& Objects.equals(name, other.name) && Objects.equals(password, other.password)
-				&& Objects.equals(status, other.status) && Objects.equals(surname, other.surname);
+				&& Objects.equals(roles, other.roles) && status == other.status
+				&& Objects.equals(surname, other.surname);
 	}
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", surname=" + surname + ", login=" + login + ", email=" + email + ", password="
-				+ password + ", status=" + status + "]";
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", login=" + login + ", email=" + email
+				+ ", password=" + password + ", roles=" + roles + ", status=" + status + "]";
 	}
+	
 }

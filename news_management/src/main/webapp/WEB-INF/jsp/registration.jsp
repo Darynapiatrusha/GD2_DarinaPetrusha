@@ -20,11 +20,20 @@
 			<p>English</p>
 		</div>
 	</div>
+	<%
+		if (request.getParameter("error_message") != null) {
+		%>
+		<div class="info-message">
+			<p>Ошибка при регистрации, попробуйте еще раз!</p>
+		</div>
+		<%
+		}
+		%>
 	<div class="registration-container">
 		<div class="frame">
 			<h1>Регистрация</h1>
-			<form name="registration" action="Controller" method="post" target="_blank">
-				<input type="hidden" name="command" value="registration">
+			<form name="registration" action="Controller" method="post">
+			<input type="hidden" name="command" value="registration">
 				<label><b>Имя</b></label><br>
 				<input type="text" name="name" required placeholder="Введите Ваше имя">
 				
@@ -32,14 +41,14 @@
 				<input type="text" name="surname" required placeholder="Введите Вашу фамилию"><br>
 				
 				<label><b>E-mail</b></label><br>
-				<input type="text" name="e-mail" required placeholder="Введите e-mail"> 
+				<input type="text" name="email" required placeholder="Введите e-mail"> 
 				
 				<label><b>Логин</b></label><br>
 				<input type="text" name="login" required placeholder="Введите логин">
 				
 				<label><b>Пароль</b></label><br>
 				<input type="password" name="password" required placeholder="Введите пароль"><br>
-				<div class="authorization-btn"> <a href=authorization.jsp>Уже есть аккаунт?</a>
+				<div class="authorization-btn"> <a href="Controller?command=show_auth_page">Уже есть аккаунт?</a>
 				</div>
 				<input type="submit" class=btn value="Зарегистрироваться"> <br>
 			</form>

@@ -12,10 +12,21 @@ public class News implements Serializable {
 	private String content;
 	private String status;
 	private int userId;
+	private int id;
 
 	public News() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+
+	public News(Date date, String title, String brief, String content, String status, int userId, int id) {
+		super();
+		this.date = date;
+		this.title = title;
+		this.brief = brief;
+		this.content = content;
+		this.status = status;
+		this.userId = userId;
+		this.id = id;
 	}
 
 	public News(Date date, String title, String brief, String content, String status, int userId) {
@@ -76,13 +87,17 @@ public class News implements Serializable {
 		this.userId = userId;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(brief, content, date, status, title, userId);
+		return Objects.hash(brief, content, date, id, status, title, userId);
 	}
 
 	@Override
@@ -95,13 +110,13 @@ public class News implements Serializable {
 			return false;
 		News other = (News) obj;
 		return Objects.equals(brief, other.brief) && Objects.equals(content, other.content)
-				&& Objects.equals(date, other.date) && Objects.equals(status, other.status)
+				&& Objects.equals(date, other.date) && id == other.id && Objects.equals(status, other.status)
 				&& Objects.equals(title, other.title) && userId == other.userId;
 	}
 
 	@Override
 	public String toString() {
 		return "News [date=" + date + ", title=" + title + ", brief=" + brief + ", content=" + content + ", status="
-				+ status + ", userId=" + userId + "]";
+				+ status + ", userId=" + userId + ", id=" + id + "]";
 	}
 }
