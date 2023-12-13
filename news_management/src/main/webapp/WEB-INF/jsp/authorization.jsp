@@ -24,7 +24,7 @@
 		if (request.getParameter("error_message") != null) {
 		%>
 		<div class="info-message">
-			<p>Ошибка при авторизации, попробуйте еще раз!</p>
+			<p>Ошибка при авторизации, попробуйте войти еще раз!</p>
 		</div>
 		<%
 		}
