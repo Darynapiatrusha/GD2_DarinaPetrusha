@@ -2,9 +2,6 @@ package by.news.management.controller;
 
 import java.io.IOException;
 
-import by.news.management.dao.connection.ConnectionPool;
-import by.news.management.dao.connection.ConnectionPoolException;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,17 +17,8 @@ public class Controller extends HttpServlet {
 		super();
 	}
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-			try {
-				ConnectionPool.getInstance().initPoolData();
-			} catch (ConnectionPoolException e) {
-				throw new RuntimeException(e);
-			}
-	}
-
 	private void doProccess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException{
 		response.setContentType("text/html");
 		String name = request.getParameter("command");
 		Command command = provider.getCommand(name);
@@ -46,8 +34,4 @@ public class Controller extends HttpServlet {
 			throws ServletException, IOException {
 		doProccess(request, response);
 	}
-	@Override
-    public void destroy() {
-        ConnectionPool.getInstance().dispose();
-    }
 }

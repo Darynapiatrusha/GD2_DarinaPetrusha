@@ -37,7 +37,7 @@ public class RegistrationCommand implements Command {
 			session.setAttribute("userId", user.getId());
 
 			String mes = "RegistrationOK";
-			response.sendRedirect("Controller?command=show_news_list&info_message=" + mes);
+			response.sendRedirect("Controller?command=show_news_list&page=1&info_message=" + mes);
 
 		} catch (ServiceException e) {
 			response.sendRedirect("Controller?command=error_registration&error_message='errorWithRegistration'");

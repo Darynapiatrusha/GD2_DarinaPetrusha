@@ -1,0 +1,24 @@
+<configuration name="ConfigTest" status="ERROR"
+	monitorInterval="5">
+	<Properties>
+		<Property name="filename">logs/log.log</Property>
+		<Property name="basePatterLayout"> %m </Property>
+	</Properties>
+	
+	<appenders>
+		<console name="out" target="SYSTEM_OUT">
+		<patternLayout pattern= "${basePatterLayout}" />
+ 		</console>
+	</appenders>
+	
+	<logger name="by.news.management.dao" level="error">
+			<appender-ref ref="out" />
+		</logger>
+		
+	<loggers>
+		<root level="error">
+			<appenderRef ref="out" />
+		</root>
+	</loggers>
+
+</configuration>

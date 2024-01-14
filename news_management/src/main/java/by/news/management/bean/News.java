@@ -39,6 +39,16 @@ public class News implements Serializable {
 		this.userId = userId;
 	}
 
+	public News(String title, String brief, String content, String status, int userId, int id) {
+		super();
+		this.title = title;
+		this.brief = brief;
+		this.content = content;
+		this.status = status;
+		this.userId = userId;
+		this.id = id;
+	}
+
 	public Date getDate() {
 		return date;
 	}

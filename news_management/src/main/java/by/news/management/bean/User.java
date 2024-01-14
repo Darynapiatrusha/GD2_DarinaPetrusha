@@ -1,7 +1,6 @@
 package by.news.management.bean;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 public class User implements Serializable {
@@ -12,7 +11,7 @@ public class User implements Serializable {
 	private String login;
 	private String email;
 	private String password;
-	private Roles roles = Roles.ADMIN;
+	private Roles roles = Roles.USER;
 	private Status status = Status.ACTIVE;
 	
 	public User() {

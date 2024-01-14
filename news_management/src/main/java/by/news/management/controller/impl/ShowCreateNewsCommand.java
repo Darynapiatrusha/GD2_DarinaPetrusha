@@ -7,13 +7,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ShowRegistrationPageCommand implements Command{
-
+public class ShowCreateNewsCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession(true).setAttribute("url", request.getRequestURI());
 		request.getSession(true).setAttribute("queryString", request.getQueryString());
-		request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
-	}
+		request.getRequestDispatcher("WEB-INF/jsp/news.jsp").forward(request, response);
 
+	}
 }

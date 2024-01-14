@@ -16,6 +16,14 @@ import by.news.management.dao.connection.ConnectionPoolException;
 import by.news.management.bean.User;
 
 public class SQLUserDao implements UserDao {
+	private final String COLUMN_ID = "id";
+	private final String COLUMN_NAME = "name";
+	private final String COLUMN_SURNAME = "surname";
+	private final String COLUMN_EMAIL = "email";
+	private final String COLUMN_LOGIN = "login";
+	private final String COLUMN_PASSWORD = "password";
+	private final String COLUMN_STATUS = "id";
+		
 	private final String INSERT_USER = "INSERT INTO users (name,surname,email,login,password,status) VALUES (?,?,?,?,?,?)";
 	private final String SELECT_ID_FROM_ROLES = "SELECT id FROM roles WHERE title = ?";
 	private final String INSERT_INTO_USERS_HAS_ROLES = "INSERT INTO users_has_roles (Users_id,roles_id) VALUES (?,?)";
@@ -75,7 +83,7 @@ public class SQLUserDao implements UserDao {
 			if (!PasswordSecurity.passwordCheck(password, resultSet.getString(6))) {
 				throw new DAOException("Wrong password");
 			}
-			user = new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("surname"));
+			user = new User(resultSet.getInt(COLUMN_ID), resultSet.getString(COLUMN_NAME), resultSet.getString(COLUMN_SURNAME));
 			return user;
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException("Authentication error", e);
@@ -94,7 +102,7 @@ public class SQLUserDao implements UserDao {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				userList.add(
-						new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("surname")));
+						new User(resultSet.getInt(COLUMN_ID), resultSet.getString(COLUMN_NAME), resultSet.getString(COLUMN_SURNAME)));
 			}
 			return userList;
 		} catch (SQLException | ConnectionPoolException e) {
@@ -113,7 +121,7 @@ public class SQLUserDao implements UserDao {
 			if (!resultSet.next()) {
 				throw new DAOException("User is not exist");
 			}
-			User user = new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("surname"),
+			User user = new User(resultSet.getInt(COLUMN_ID), resultSet.getString(COLUMN_NAME), resultSet.getString(COLUMN_SURNAME),
 					resultSet.getString("email"));
 			return user;
 		} catch (SQLException | ConnectionPoolException e) {
@@ -221,7 +229,7 @@ public class SQLUserDao implements UserDao {
 		if (!resultSet.next()) {
 			throw new DAOException("Role is not exist");
 		}
-		roleId = resultSet.getInt("id");
+		roleId = resultSet.getInt(COLUMN_ID);
 
 		preparedStatement.close();
 		resultSet.close();
