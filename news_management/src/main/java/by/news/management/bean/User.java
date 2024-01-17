@@ -11,9 +11,9 @@ public class User implements Serializable {
 	private String login;
 	private String email;
 	private String password;
-	private Roles roles = Roles.USER;
+	private Roles roles;
 	private Status status = Status.ACTIVE;
-	
+
 	public User() {
 		super();
 	}
@@ -31,8 +31,7 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
-	public User(String name, String surname, String login, String email, String password, Roles roles,
-			Status status) {
+	public User(String name, String surname, String login, String email, String password, Roles roles, Status status) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -151,9 +150,8 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(email, other.email) && id == other.id && Objects.equals(login, other.login)
-				&& Objects.equals(name, other.name) && Objects.equals(password, other.password)
-				&& Objects.equals(roles, other.roles) && status == other.status
-				&& Objects.equals(surname, other.surname);
+				&& Objects.equals(name, other.name) && Objects.equals(password, other.password) && roles == other.roles
+				&& status == other.status && Objects.equals(surname, other.surname);
 	}
 
 	@Override
@@ -161,5 +159,4 @@ public class User implements Serializable {
 		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", login=" + login + ", email=" + email
 				+ ", password=" + password + ", roles=" + roles + ", status=" + status + "]";
 	}
-	
 }

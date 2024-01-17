@@ -52,4 +52,5 @@
 			<a href="Controller?command=show_news_list&page=${pagination}">${pagination}</a>
 		</c:forEach>
 	</div>
+
 </div>

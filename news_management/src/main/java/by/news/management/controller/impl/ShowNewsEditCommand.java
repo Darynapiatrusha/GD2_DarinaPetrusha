@@ -23,6 +23,7 @@ public class ShowNewsEditCommand implements Command {
 			request.getSession(true).setAttribute("queryString", request.getQueryString());
 			request.getRequestDispatcher("WEB-INF/jsp/news.jsp").forward(request, response);
 		} catch (ServiceException e) {
+			response.sendRedirect("Controller?command=show_error");
 			e.printStackTrace();
 		}
 	}

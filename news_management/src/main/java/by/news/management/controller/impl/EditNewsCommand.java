@@ -26,8 +26,8 @@ public class EditNewsCommand implements Command {
 
 			response.sendRedirect(url);
 		} catch (ServiceException e) {
-			e.printStackTrace();
 			response.sendRedirect("Controller?command=show_error");
+			e.printStackTrace();
 		}
 	}
 }

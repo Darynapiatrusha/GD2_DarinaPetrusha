@@ -27,8 +27,8 @@ public class SaveNewsCommand implements Command {
 			String url = "Controller?command=show_news_view&id=" + id;
 			response.sendRedirect(url);
 		} catch (ServiceException e) {
-			e.printStackTrace();
 			response.sendRedirect("Controller?command=show_error");
+			e.printStackTrace();
 		}
 	}
 }

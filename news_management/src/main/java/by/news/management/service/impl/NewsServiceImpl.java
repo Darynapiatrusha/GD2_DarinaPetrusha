@@ -2,6 +2,9 @@ package by.news.management.service.impl;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import by.news.management.bean.News;
 import by.news.management.dao.DaoProvider;
 import by.news.management.dao.NewsDao;
@@ -11,6 +14,7 @@ import by.news.management.service.ServiceException;
 
 public class NewsServiceImpl implements NewsService {
 	private final NewsDao NewsDao = DaoProvider.getInstance().getNewsDao();
+	private final static Logger log = LogManager.getRootLogger();
 
 	@Override
 	public int addNews(News news) throws ServiceException {
@@ -18,7 +22,8 @@ public class NewsServiceImpl implements NewsService {
 			int id = NewsDao.addNews(news);
 			return id;
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of add news process", e);
+			throw new ServiceException("News was not add to database", e);
 		}
 	}
 
@@ -27,7 +32,8 @@ public class NewsServiceImpl implements NewsService {
 		try {
 			NewsDao.editNews(news, userId);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of edit news process", e);
+			throw new ServiceException("News was not updated in database", e);
 		}
 	}
 
@@ -36,7 +42,8 @@ public class NewsServiceImpl implements NewsService {
 		try {
 			NewsDao.deleteNews(id);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of delete news process");
+			throw new ServiceException("News was not deleted in database", e);
 		}
 	}
 
@@ -45,7 +52,8 @@ public class NewsServiceImpl implements NewsService {
 		try {
 			return NewsDao.getListOfNews(page);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of get list of news process");
+			throw new ServiceException("News was not selecting from database", e);
 		}
 	}
 
@@ -54,7 +62,8 @@ public class NewsServiceImpl implements NewsService {
 		try {
 			return NewsDao.getById(id);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of get news by id process");
+			throw new ServiceException("News with this id was not found in database", e);
 		}
 	}
 
@@ -63,7 +72,8 @@ public class NewsServiceImpl implements NewsService {
 		try {
 			return NewsDao.getListOfPages();
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			log.error("Error of getListOfPages process");
+			throw new ServiceException("List of pages was not found in database", e);
 		}
 	}
 }

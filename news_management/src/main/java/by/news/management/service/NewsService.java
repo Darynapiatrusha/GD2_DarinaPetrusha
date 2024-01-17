@@ -3,7 +3,6 @@ package by.news.management.service;
 import java.util.List;
 
 import by.news.management.bean.News;
-import by.news.management.dao.exceptions.DAOException;
 
 public interface NewsService {
 	public int addNews(News news) throws ServiceException;

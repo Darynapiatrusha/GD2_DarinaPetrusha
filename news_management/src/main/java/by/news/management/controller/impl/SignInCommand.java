@@ -16,17 +16,17 @@ public class SignInCommand implements Command {
 	private final UserService userService = ServiceProvider.getInstance().getUserService();
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
 			User user = userService.signIn(request.getParameter("login"), request.getParameter("password"));
-			HttpSession session =request.getSession(true);
+			HttpSession session = request.getSession(true);
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userId", user.getId());
-			session.setAttribute("userRoles", user.getRoles());
-			
+			session.setAttribute("userRole", user.getRoles());
+
 			response.sendRedirect("Controller?command=show_news_list&page=1");
+
 		} catch (ServiceException e) {
 			response.sendRedirect("Controller?command=error_auth&error_message='errorWithAuthentification'");
 		}

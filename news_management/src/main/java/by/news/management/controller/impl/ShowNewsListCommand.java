@@ -17,8 +17,8 @@ public class ShowNewsListCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int page = Integer.parseInt(request.getParameter("page"));
 		try {
-			int page = Integer.parseInt(request.getParameter("page"));
 			List<News> news = newsService.getListOfNews(page);
 			List<Integer> numberOfPages = newsService.getListOfPages();
 			request.setAttribute("listOfNews", news);
@@ -27,9 +27,8 @@ public class ShowNewsListCommand implements Command {
 			request.getSession(true).setAttribute("queryString", request.getQueryString());
 			request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
 		} catch (ServiceException e) {
-			e.printStackTrace();
 			response.sendRedirect("Controller?command=show_error");
+			e.printStackTrace();
 		}
-
 	}
 }

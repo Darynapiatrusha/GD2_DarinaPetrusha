@@ -41,8 +41,7 @@
 			<h1>
 				<c:out value="${authorization_label}" />
 			</h1>
-			<form name="sign_in" action="Controller" method="post"
-				target="_blank">
+			<form name="sign_in" action="Controller" method="post">
 				<input type="hidden" name="command" value="sign_in"> 
 				<label><b><c:out value="${login_label}" /></b></label><br>
 				 

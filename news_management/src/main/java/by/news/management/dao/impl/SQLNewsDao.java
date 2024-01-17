@@ -1,4 +1,4 @@
-package by.news.management.dao.impl;
+ package by.news.management.dao.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -19,8 +19,8 @@ import by.news.management.dao.exceptions.DAOException;
 import by.news.management.bean.News;
 
 public class SQLNewsDao implements NewsDao {
-	private final static Logger log = LogManager.getLogger(SQLNewsDao.class);
-	
+	private final static Logger log = LogManager.getRootLogger();
+
 	private static final String COLUMN_ID = "id";
 	private static final String COLUMN_TITLE = "title";
 	private static final String COLUMN_DATE = "publication_date";
@@ -55,19 +55,21 @@ public class SQLNewsDao implements NewsDao {
 
 			int result = preparedStatement.executeUpdate();
 			if (result == 0) {
-				log.error("Error in process of inserting news");
-				throw new DAOException("Error in process of inserting information to news in DataBase, news was not add");
+				log.error("Error of insert news");
+				throw new DAOException(
+						"Error in process of inserting information to news in DataBase, news was not add");
 			}
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			rs.next();
 			news.setId(rs.getInt(1));
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			log.error("Error in process of adding news", e);
+			log.error("ERROR", e);
 			throw new DAOException("Error in process of adding news, news was not add because of SQLException", e);
 		} catch (ConnectionPoolException e1) {
-			log.error("Error in process of adding news", e1);
-			throw new DAOException("Error in process of adding news, news was not add because of ConnectionPoolException", e1);
+			log.error("ERROR", e1);
+			throw new DAOException(
+					"Error in process of adding news, news was not add because of ConnectionPoolException", e1);
 		}
 	}
 
@@ -85,18 +87,26 @@ public class SQLNewsDao implements NewsDao {
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				throw new DAOException("rollback eror", e);
+				log.error("ERROR", e);
+				throw new DAOException("Rollback error", e);
 			}
-			throw new DAOException("Registration error", e);
+			log.error("ERROR", e);
+			throw new DAOException(
+					"Error in process of updating information in database after edit news, commit was not comleted, trying to do rollback",
+					e);
 		} catch (ConnectionPoolException e) {
-			throw new DAOException("Registration error", e);
+			log.error("ERROR", e);
+			throw new DAOException(
+					"Error in process of updating information in database after edit news because of ConnectionPoolException",
+					e);
 		} finally {
 			if (connection != null) {
 				try {
 					connection.setAutoCommit(true);
 					connection.close();
 				} catch (SQLException e) {
-					throw new DAOException("rollback error", e);
+					log.error("ERROR", e);
+					throw new DAOException("Error in process of closing connection", e);
 				}
 			}
 		}
@@ -109,11 +119,17 @@ public class SQLNewsDao implements NewsDao {
 			preparedStatement.setInt(2, id);
 			int result = preparedStatement.executeUpdate();
 			if (result == 0) {
-				throw new DAOException("Error");
+				log.error("Error in process of deleting news");
+				throw new DAOException("Invalid information, the process of executeUpdate was not completed");
 			}
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
-			throw new DAOException("Error", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+			throw new DAOException("Error: information in dababase was not updatetd, news was not deleted", e);
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException(
+					"Error: information in dababase was not updatetd, news was not deleted because of ConnectionPoolException",
+					e1);
 		}
 	}
 
@@ -126,16 +142,22 @@ public class SQLNewsDao implements NewsDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
-				throw new DAOException("Error");
+				log.error("Error in method getByTitle()");
+				throw new DAOException("Error in process of executeQuery, resultSet is null");
 			}
 			News news = new News(resultSet.getDate(COLUMN_DATE), resultSet.getString(COLUMN_TITLE),
 					resultSet.getNString(COLUMN_BRIEF), resultSet.getString(COLUMN_CONTENT),
 					resultSet.getString(COLUMN_STATUS), resultSet.getInt(COLUMN_USERS_ID), resultSet.getInt(COLUMN_ID));
 			return news;
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
-			throw new DAOException("Error", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+			throw new DAOException("Error in process of getting news from database by title because of SQLException",
+					e);
 
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException(
+					"Error in process of getting news from database by title because of ConnectionPoolException", e1);
 		}
 	}
 
@@ -148,15 +170,20 @@ public class SQLNewsDao implements NewsDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				throw new DAOException("Error");
+				log.error("Error in method getByDate()");
+				throw new DAOException("Error in process of executeQuery, resultSet is null");
 			}
 			News news = new News(resultSet.getDate(COLUMN_DATE), resultSet.getString(COLUMN_TITLE),
 					resultSet.getNString(COLUMN_BRIEF), resultSet.getString(COLUMN_CONTENT),
 					resultSet.getString(COLUMN_STATUS), resultSet.getInt(COLUMN_USERS_ID), resultSet.getInt(COLUMN_ID));
 			return news;
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
-			throw new DAOException("Error", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+			throw new DAOException("Error in process of getting news from database by date because of SQLException", e);
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException(
+					"Error in process of getting news from database by date because of ConnectionPoolException", e1);
 		}
 	}
 
@@ -169,16 +196,21 @@ public class SQLNewsDao implements NewsDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
-				throw new DAOException("Error");
+				log.error("Error in method getById()");
+				throw new DAOException("News with this id was not found");
 			}
 			News news = new News(resultSet.getDate(COLUMN_DATE), resultSet.getString(COLUMN_TITLE),
 					resultSet.getNString(COLUMN_BRIEF), resultSet.getString(COLUMN_CONTENT),
 					resultSet.getString(COLUMN_STATUS), resultSet.getInt(COLUMN_USERS_ID), resultSet.getInt(COLUMN_ID));
 
 			return news;
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
-			throw new DAOException("Error", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+			throw new DAOException("Error in process of getting news from database by id because of SQLException", e);
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException(
+					"Error in process of getting news from database by id because of ConnectionPoolException", e1);
 		}
 	}
 
@@ -198,7 +230,8 @@ public class SQLNewsDao implements NewsDao {
 			preparedStatement.setInt(3, offset);
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				if (!resultSet.next()) {
-					throw new DAOException("News in range not found");
+					log.error("Error in method getListOfNews()");
+					throw new DAOException("News in range was not found");
 				}
 
 				List<News> newsList = new ArrayList<>();
@@ -215,9 +248,13 @@ public class SQLNewsDao implements NewsDao {
 				} while (resultSet.next());
 				return newsList;
 			}
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
-			throw new DAOException("Error in the news getting process", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+			throw new DAOException("Error in process of getting news from database because of SQLException", e);
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException("Error in process of getting news from database because of ConnectionPoolException",
+					e1);
 		}
 	}
 
@@ -230,7 +267,8 @@ public class SQLNewsDao implements NewsDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
-				throw new DAOException("Error");
+				log.error("Error in method getListOfPages()");
+				throw new DAOException("News in range was not found");
 			}
 			int countOfNews = resultSet.getInt(1);
 
@@ -248,9 +286,12 @@ public class SQLNewsDao implements NewsDao {
 				pages.add(i);
 			}
 			return pages;
-		} catch (SQLException | ConnectionPoolException e) {
-			log.error("Error", e);
+		} catch (SQLException e) {
+			log.error("ERROR", e);
 			throw new DAOException("Error", e);
+		} catch (ConnectionPoolException e1) {
+			log.error("ERROR", e1);
+			throw new DAOException("Error", e1);
 		}
 	}
 
@@ -261,14 +302,15 @@ public class SQLNewsDao implements NewsDao {
 			resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
-				throw new DAOException("Error of select news from database");
+				log.error("Error in method getNewsById()");
+				throw new DAOException("News with this id was not found");
 			}
 			News news = new News(resultSet.getDate(COLUMN_DATE), resultSet.getString(COLUMN_TITLE),
 					resultSet.getNString(COLUMN_BRIEF), resultSet.getString(COLUMN_CONTENT),
 					resultSet.getString(COLUMN_STATUS), resultSet.getInt(COLUMN_USERS_ID), resultSet.getInt(COLUMN_ID));
 			return news;
 		} catch (SQLException e) {
-			log.error("Error", e);
+			log.error("ERROR", e);
 			throw new DAOException("Error in process of selecting news by id", e);
 		}
 	}
@@ -282,11 +324,12 @@ public class SQLNewsDao implements NewsDao {
 
 			int result = preparedStatement.executeUpdate();
 			if (result == 0) {
-				throw new DAOException("Error updating information of news item");
+				log.error("Error in method updateNews()");
+				throw new DAOException("Information was not updated");
 			}
 
 		} catch (SQLException e) {
-			log.error("Error", e);
+			log.error("ERROR", e);
 			throw new DAOException("Error in process of updating information of news", e);
 		}
 	}
@@ -302,13 +345,13 @@ public class SQLNewsDao implements NewsDao {
 
 			int result = preparedStatement.executeUpdate();
 			if (result == 0) {
-				throw new DAOException("Error to insert information to news_updated");
+				log.error("Error in method insertNewsUdpates()");
+				throw new DAOException("Information in table news_updatetd was not updated");
 			}
 
 		} catch (SQLException e) {
-			log.error("Error", e);
+			log.error("ERROR", e);
 			throw new DAOException("Error in process of inserting information to table(news_updated)", e);
 		}
-
 	}
 }
